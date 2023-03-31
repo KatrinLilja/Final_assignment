@@ -3,18 +3,18 @@ import * as constants from '../constants';
 
 const initialState = {
     roomname: "",
-  };
+};
   
-  const chatroomReducer = (state = initialState, action) => {
+const chatroomReducer = (state = initialState, action) => {
     switch (action.type) {
-      case constants.ADD_CHAT_ROOM:
-        return {
-          ...state,
-          roomname: action.payload,
-        };
-      default:
-        return state;
+        case constants.ADD_CHAT_ROOM:
+            return {
+            ...state,
+            roomname: action.payload,
+            };
+        default:
+            return state;
     }
   };
   
-  export default chatroomReducer;
+export default chatroomReducer;

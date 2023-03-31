@@ -1,6 +1,5 @@
 .gridRoom {
-    
     display: grid;
     grid-template-columns: repeat(2, 30% 70%);
-    margin-right: 180px;
+    margin: 20px;
 }

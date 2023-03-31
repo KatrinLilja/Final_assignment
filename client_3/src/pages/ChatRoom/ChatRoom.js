@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../../services/socketService";
+import PropTypes from "prop-types";
 import './styles.css';
 
 export function ChatRoom() {
@@ -18,21 +19,19 @@ export function ChatRoom() {
     const navigate = useNavigate();
 
     function sendMessage(event) {
-        event.preventDefault(); // prevent the form from reloading the page
-        if (message.trim() !== "") { // check if the message is not empty
+        event.preventDefault(); 
+        if (message.trim() !== "") { 
             socket.emit("sendmsg", {
             roomName: currentChatroom,
             msg: message
         });
-        setMessage(""); // clear the input field
+        setMessage("");
         }
     }
 
 
 
     function kickUser(user) {
-        // user.preventDefault();
-        // setKickUsername(user)
         console.log("setKickUsername: ",user);
         socket.emit("kick", { user, room }, function (result) {
             if (result) {
@@ -41,11 +40,9 @@ export function ChatRoom() {
               console.log("Failed to kick user");
             }
         });
-        // setKickUsername("");
     }
 
     function banUser(user) {
-        // event.preventDefault(); 
         console.log("kickUsername: ",banUsername)
         socket.emit("ban", { user: user, room }, function (result) {
             if (result) {
@@ -57,8 +54,6 @@ export function ChatRoom() {
         setBanUsername("");
     }
     function giveOp(user) {
-        // event.preventDefault(); 
-        // console.log("kickUsername: ",op)
         socket.emit("op", { user: user, room }, function (result) {
             if (result) {
               console.log("User op successfully");
@@ -88,7 +83,11 @@ export function ChatRoom() {
         } else {
             // alert("NOOOO")
             // navigate("/chat")
-            
+        }
+        if (usersInRoom[room] && Object.keys(usersInRoom[room].banned).includes(username) ) {
+            // console.log(username)
+            alert("You are banned from this room :(")
+            navigate("/chat")
         }
 
         socket.on("updatechat", (roomName, messageHistory) => {
@@ -96,29 +95,19 @@ export function ChatRoom() {
             setMessages(messageHistory);
         }
         });
-        //Ekki í notkun
         socket.emit("rooms");
         socket.on("rooms", function () {
             socket.emit("roomlist", Object.keys(usersInRoom));
         });
+
         socket.on("roomlist", (roomList) => {
             setUsersInRoom(roomList);
-
-
         });
+
         
-        // for (const roomName in usersInRoom) {
-        //     const room = usersInRoom[roomName];
-        //     const users = Object.keys(room.users);
-        //     console.log(`Users in room ${roomName}: ${users.join(", ")}`);
-        // }
-        ////////
     }, [currentChatroom, usersInRoom]);
 
-    // console.log("usersInRoom: ", usersInRoom)
 
-    
-    
     return (
         <div>
             <div className="navBar">
@@ -140,7 +129,7 @@ export function ChatRoom() {
                                 <li key={user}>{user}</li>
                                 {usersInRoom[room] && Object.keys(usersInRoom[room].ops).map((ops) => (
                                 <div>
-                                    {ops === username && ( //laga hér, user er username, á ekki að vera þannig
+                                    {ops === username && (
                                         <div>
                                         
                                             <button key={kickUsername} onClick={() => kickUser(user)}>Kick</button>
@@ -158,7 +147,6 @@ export function ChatRoom() {
                     <button key={room} onClick={() => partRoom(room)}>Leave room D:</button>
                 </div>
                 
-
                 {/* Message */}
                 <div className="gridItems">
                     <div>
@@ -180,55 +168,12 @@ export function ChatRoom() {
                             <button type="submit">Send</button>
                         </form>
                 </div>
-
-                {/* Kick, ban, op */}
-                {/* <div className="gridItems">
-                    {usersInRoom[room] && Object.keys(usersInRoom[room].ops).map((user) => (
-                        <div>
-                            {user === username && (
-                                <div>
-                                    <form onSubmit={kickUser}>
-                                        <label>
-                                        KICK:
-                                        <input
-                                            type="text"
-                                            value={kickUsername}
-                                            onChange={(event) => setKickUsername(event.target.value)}
-                                        />
-                                        </label>
-                                        <button type="submit">KICK</button>
-                                    </form>
-                                    <form onSubmit={banUser}>
-                                        <label>
-                                            BAN:
-                                            <input
-                                            type="text"
-                                            value={banUsername}
-                                            onChange={(event) => setBanUsername(event.target.value)}
-                                            />
-                                        </label>
-                                        <button type="submit">BAN</button>
-                                    </form>
-                                    <form onSubmit={giveOp}>
-                                        <label>
-                                            OP:
-                                            <input
-                                            type="text"
-                                            value={banUsername}
-                                            onChange={(event) => setOp(event.target.value)}
-                                            />
-                                        </label>
-                                        <button type="submit">OP</button>
-                                    </form>
-                                </div>
-                            )}
-
-                        </div>
-                    ))}
-                    
-                    
-                </div> */}
             </div>
         </div>
     );
-}
+};
+
+ChatRoom.propTypes = {
+    username: PropTypes.string.isRequired,
+    room: PropTypes.string.isRequired,
+  };

@@ -3,21 +3,21 @@ import * as constants from '../constants';
 
 const initialState = {
     username: "",
-  };
-  
-  const userReducer = (state = initialState, action) => {
+};
+
+const userReducer = (state = initialState, action) => {
     switch (action.type) {
-      case constants.ADD_USER:
+    case constants.ADD_USER:
         return {
-          ...state,
-          username: action.payload,
+        ...state,
+        username: action.payload,
         };
-      default:
+    default:
         return state;
     }
-  };
-  
-  export default userReducer;
+};
+
+export default userReducer;
 
 
 

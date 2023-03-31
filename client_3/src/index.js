@@ -10,17 +10,17 @@ import router from "./routes/routes";
 import './styles/base.css';
 
 const store = configureStore({
-  reducer: reducers,
-  middleware: [thunk],
+reducer: reducers,
+middleware: [thunk],
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+<React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
     </Provider>
-  </React.StrictMode>
+</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

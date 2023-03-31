@@ -2,38 +2,30 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { socket } from "../../services/socketService";
+import PropTypes from "prop-types";
 import './styles.css';
 
 const ChatRooms = () => {
     const username = useSelector((state) => state.userReducer.username);
     const [allusers, setAllusers] = useState([]);
     const [rooms, setRooms] = useState([]);
-    const [newChatroom, setNewChatroom] = useState("");
     const [privateMsg, setPrivateMsg] = useState("");
     const [userPrivate, setUserPrivate] = useState("");
-    // const [activePrivateChat, setActivePrivateChat] = useState(null);
-
-
     const navigate = useNavigate();
-
-
-    const [updated, setUpdated] = useState('');
+    const [newRoom, setNewRoom] = useState('');
     const [password, setPassword] = useState(undefined);
+
     const handleClick = () => {
-        // setUpdated(updated);
-        socket.emit("joinroom", { room: updated, pass: password }, (success, reason) => {
-            if (rooms[updated]) {
+        socket.emit("joinroom", { room: newRoom, pass: password }, (success, reason) => {
+            if (rooms[newRoom]) {
                 console.log("herbergi er til!")
-                navigate(`/chat/${updated}`);
+                navigate(`/chat/${newRoom}`);
             } else {
                 console.log("herbergi er ekki til!")
-                navigate(`/chat/${updated}`);
+                navigate(`/chat/${newRoom}`);
             }
-        // if (success) {
-        //     navigate(`/chat/${updated}`);
-        // }
         });
-        console.log(updated)
+        console.log(newRoom)
     };
 
     useEffect(() => {
@@ -44,7 +36,6 @@ const ChatRooms = () => {
         
         socket.emit("users");
         socket.on("userlist", (userList) => {
-            // console.log("userList: ", userList)
             setAllusers(userList);
         });
 
@@ -102,7 +93,6 @@ const ChatRooms = () => {
             } else {
                 alert(`Failed to send private message to ${user}.`);
             }
-            // handle acknowledgement from the server, if any
           });
     };
 
@@ -117,7 +107,7 @@ const ChatRooms = () => {
                 {/* Active users */}
                 <div className="gridItems">
                     <h1>Active users</h1>
-                    <p>private message:</p>
+                    <p>Private message:</p>
                     <input
                         type="text"
                         id="message"
@@ -157,8 +147,8 @@ const ChatRooms = () => {
                             type="text"
                             id="message"
                             name="message"
-                            onChange={(event) => setUpdated(event.target.value)}
-                            value={updated}
+                            onChange={(event) => setNewRoom(event.target.value)}
+                            value={newRoom}
                         />
                     </label>
                     <label>
@@ -171,7 +161,7 @@ const ChatRooms = () => {
                             value={password}
                         />
                     </label>
-                    <button onClick={handleClick}>Update</button>
+                    <button onClick={handleClick}>Create</button>
                 </div>
                 <div className="gridItems">
                     <h1>private</h1>
@@ -184,6 +174,16 @@ const ChatRooms = () => {
             </div>
         </div>
     );
+    
+};
+
+ChatRooms.propTypes = {
+    allusers: PropTypes.arrayOf(PropTypes.string).isRequired,
+    rooms: PropTypes.objectOf(PropTypes.number).isRequired,
+    privateMsg: PropTypes.string.isRequired,
+    userPrivate: PropTypes.string.isRequired,
+    newRoom: PropTypes.string.isRequired,
+    password: PropTypes.string,
 };
 
 export default ChatRooms;
