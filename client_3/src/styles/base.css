@@ -1,0 +1,17 @@
+body {
+    /* background-color: #CBE4DE; */
+    background-color: #D8D8D8;
+}
+.navBar {
+    /* background-color: #2C3333; */
+    background-color: #408E91;
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 30px;
+    
+}
+.navBar h1 {
+    text-align: center;
+    /* color: #CBE4DE; */
+    color: #D8D8D8;
+}

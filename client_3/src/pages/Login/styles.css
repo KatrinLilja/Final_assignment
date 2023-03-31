@@ -1,0 +1,40 @@
+/* .navBar {
+    background-color: #2C3333;
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 30px;
+    
+}
+.navBar h1 {
+    text-align: center;
+    color: #CBE4DE;
+} */
+.container {
+    /* background-color: #0E8388; */
+    background-color: #E49393;
+    height: 400px;
+    align-self: center;
+    align-items: center;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.chooseName {
+    align-self: center;
+    /* color: #2C3333; */
+    color: #1e4c47;
+    font-size: 30px;
+    font-weight:900;
+    margin: 20px;
+}
+
+.userTextField {
+    /* background-color: #12b9bf; */
+    background-color: #E49393;
+    width: 200px;
+    border-radius: 7px;
+    align-self: center;
+    margin: 20px;
+}

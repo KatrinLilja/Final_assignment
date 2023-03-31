@@ -1,0 +1,30 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* margin-right: 180px; */
+    margin: 0 20px;
+}
+
+.gridItems {
+    width: 70%;
+    background-color: #E49393;
+    justify-content: center;
+    justify-self: center;
+    padding: 0 10%;
+    padding-bottom: 100%;
+    margin-bottom: 20px;
+    /* margin: 0 30px; */
+    /* border: 1px solid black; */
+}
+.gridItems ul {
+    display: flex;
+    flex-direction: column;
+    padding-left: 5px;
+}
+.gridItems ul button{
+    margin-bottom: 10px;
+}
+.gridItems label {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+}

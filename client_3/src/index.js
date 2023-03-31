@@ -7,6 +7,7 @@ import reducers from "./reducers";
 import { RouterProvider } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
 import router from "./routes/routes";
+import './styles/base.css';
 
 const store = configureStore({
   reducer: reducers,

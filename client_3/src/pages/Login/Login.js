@@ -3,11 +3,14 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../../services/socketService";
 import { addUsername } from "../../actions/userActions";
-
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import AppBar from '@mui/material/AppBar';
+import './styles.css';
 // const LoginPage = () => {
 export function LoginPage() {
   const [username, setUsername] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState("The username is occupied!");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -33,7 +36,7 @@ export function LoginPage() {
   // };
 
   function onSubmit() {
-    setError("");
+    setError("The username is occupied!");
     socket.emit("adduser", username, (success) => {
       if (success) {
         // This could be another route, but in this example we are redirecting to a page where you will see all rooms
@@ -42,36 +45,41 @@ export function LoginPage() {
         // dispatch(addUsername(username));
         navigate("/chat");
       } else {
-        setError("The username is occupied!");
+        
         alert(error);
       }
     });
+    
   }
 
   return (
-    <div>
-      <h1>Login Page</h1>
+    <div className="center">
+        <div className="navBar">
+            <h1>Login Page</h1>
+        </div>
 
-      <div className="container">
-        <label>Username</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <button onClick={onSubmit}>Submit</button>
-      </div>
-      {/* <form onSubmit={checkUsername}>
-            <label>
-            Username:
-            <input
-                type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
+        <Stack className="container">
+            <label className="chooseName">Choose A Nickname!</label>
+            <TextField
+            type="text"
+            value={username}
+            variant="filled"
+            className="userTextField"
+            onChange={(e) => setUsername(e.target.value)}
             />
-            </label>
-            <button type="submit">Login</button>
-        </form> */}
+            <button onClick={onSubmit}>Submit</button>
+        </Stack>
+        {/* <form onSubmit={checkUsername}>
+                <label>
+                Username:
+                <input
+                    type="text"
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                />
+                </label>
+                <button type="submit">Login</button>
+            </form> */}
     </div>
   );
 }
